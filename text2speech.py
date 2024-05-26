@@ -1,18 +1,22 @@
-from chardet.universaldetector import UniversalDetector
+import tkinter
+import tkinter.filedialog
+import pyttsx3
+import docx
 
+file_path = "KP add - GBS DRAFT.docx"
+if file_path == "":
+    root = tkinter.Tk()
+    root.withdraw()
+    file_path = tkinter.filedialog.askopenfilename()
 
-file_name = 'sample file.txt'
-def detect_encoding(file_name):
-    detector = UniversalDetector()
-    document = open(file_name, 'rb')
-    for line in document:
-        detector.feed(line)
-    print(detector.result)
-    detector.close()
-   
+tts = pyttsx3.init()
+speech_rate = tts.getProperty('rate')
+tts.setProperty('rate', speech_rate-30)
+print(tts.getProperty('rate'))
+file = docx.Document(file_path)
+full_text = ""
+for para in file.paragraphs:
+    full_text += para.text
 
-
-print(detect_encoding(file_name))
-
-# file = open(file_name, 'r')
-# print(file.readlines()[3])
+tts.say(full_text)
+tts.runAndWait()
